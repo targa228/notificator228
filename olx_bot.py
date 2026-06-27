@@ -283,13 +283,17 @@ def main():
         run_test()
         return
     if args.loop > 0:
-        log(f"Loop mode: polling every {args.loop}s. Ctrl+C to stop.")
+        log(f"Loop mode: polling every {args.loop}s (precise). Ctrl+C to stop.")
         while True:
+            start = time.monotonic()
             try:
                 run_once()
             except Exception as e:
                 log(f"Run error: {type(e).__name__}: {e}")
-            time.sleep(args.loop)
+            # Sleep so each cycle starts ~every args.loop seconds, regardless of
+            # how long the poll itself took (keeps the interval precise).
+            elapsed = time.monotonic() - start
+            time.sleep(max(5, args.loop - elapsed))
     else:
         run_once()
 
