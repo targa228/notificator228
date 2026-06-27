@@ -1,0 +1,46 @@
+name: OLX -> Telegram notifier
+
+on:
+  schedule:
+    # Every 10 minutes (UTC). GitHub may delay scheduled runs under load,
+    # so treat this as "about every 10-15 minutes".
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}   # lets you trigger a run manually from the Actions tab
+
+concurrency:
+  group: olx-monitor
+  cancel-in-progress: false
+
+permissions:
+  contents: write          # needed to commit the updated state.json
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run notifier
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python olx_bot.py
+
+      - name: Persist state.json
+        run: |
+          if [ -n "$(git status --porcelain state.json)" ]; then
+            git config user.name "olx-bot"
+            git config user.email "olx-bot@users.noreply.github.com"
+            git add state.json
+            git commit -m "chore: update seen state [skip ci]"
+            git push
+          else
+            echo "No state change to commit."
+          fi
