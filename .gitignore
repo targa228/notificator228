@@ -3,6 +3,9 @@
 .env.*
 !.env.example
 
+# Runtime state (lives on the server, not in the repo)
+state_vinted.json
+
 # Python
 __pycache__/
 *.pyc

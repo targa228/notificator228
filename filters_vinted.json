@@ -1,0 +1,17 @@
+[
+  {
+    "name": "sony",
+    "params": { "search_text": "sony" },
+    "source": "https://www.vinted.ro/catalog?search_text=sony&order=newest_first"
+  },
+  {
+    "name": "aparate foto",
+    "params": { "catalog_ids": "3075" },
+    "source": "https://www.vinted.ro/catalog?catalog[]=3075&order=newest_first"
+  },
+  {
+    "name": "nintendo",
+    "params": { "catalog_ids": "3025", "brand_ids": "77600" },
+    "source": "https://www.vinted.ro/catalog?catalog[]=3025&brand_ids[]=77600&order=newest_first"
+  }
+]
