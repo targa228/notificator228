@@ -1,0 +1,47 @@
+[
+  {
+    "name": "switch",
+    "query": "switch",
+    "source": "https://www.olx.ro/electronice-si-electrocasnice/laptop-calculator-gaming/q-switch/?search%5Border%5D=created_at%3Adesc"
+  },
+  {
+    "name": "oakley ochelari",
+    "query": "oakley",
+    "source": "https://www.olx.ro/oferte/q-oakley/"
+  },
+  {
+    "name": "sony",
+    "query": "sony",
+    "source": "https://www.olx.ro/oferte/q-sony/?search%5Border%5D=created_at%3Adesc"
+  },
+  {
+    "name": "fossil big tic",
+    "query": "fossil big tic",
+    "source": "https://www.olx.ro/oferte/q-fossil%20big%20tic/"
+  },
+  {
+    "name": "canon",
+    "query": "canon",
+    "source": "https://www.olx.ro/oferte/q-canon/?search%5Border%5D=created_at%3Adesc"
+  },
+  {
+    "name": "nikon",
+    "query": "nikon",
+    "source": "https://www.olx.ro/oferte/q-nikon/?search%5Border%5D=created_at%3Adesc"
+  },
+  {
+    "name": "aparat foto",
+    "query": "aparat foto",
+    "source": "https://www.olx.ro/oferte/q-aparat%20foto/?search%5Border%5D=created_at%3Adesc"
+  },
+  {
+    "name": "camera foto",
+    "query": "camera foto",
+    "source": "https://www.olx.ro/oferte/q-camera%20foto/?search%5Border%5D=created_at%3Adesc"
+  },
+  {
+    "name": "camera video",
+    "query": "camera video",
+    "source": "https://www.olx.ro/electronice-si-electrocasnice/gadgets-wearables-si-camere-foto-video/camere-video/camere-video/q-camera-video/?search%5Border%5D=created_at%3Adesc"
+  }
+]
