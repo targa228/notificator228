@@ -117,6 +117,17 @@ def price_label(offer):
     return "fără preț"
 
 
+def best_photo(offer):
+    """First photo URL of an OLX offer (link template has {width}x{height})."""
+    photos = offer.get("photos") or []
+    if not photos:
+        return None
+    link = photos[0].get("link", "")
+    if not link:
+        return None
+    return link.replace("{width}", "800").replace("{height}", "600")
+
+
 def parse_time(raw):
     try:
         return datetime.fromisoformat(raw)
