@@ -132,25 +132,30 @@ def format_message(filter_name, offer):
     return f"\U0001F195 <b>[{tag}]</b> {title} — {price}\n{link}"
 
 
-def send_telegram(token, chat_id, text):
-    url = TELEGRAM_API.format(token=token, method="sendMessage")
-    payload = {
-        "chat_id": chat_id,
-        "text": text,
-        "parse_mode": "HTML",
-        "disable_web_page_preview": False,
-    }
-    r = requests.post(url, data=payload, timeout=30)
-    if r.status_code == 429:
-        retry = 5
-        try:
-            retry = r.json().get("parameters", {}).get("retry_after", 5)
-        except Exception:
-            pass
-        log(f"Telegram rate limit, sleeping {retry}s")
-        time.sleep(retry + 1)
+def send_photo(token, chat_id, photo, caption):
+    """Send the listing as a big photo + caption (sendPhoto). Falls back to a
+    plain message with link preview if the photo can't be sent."""
+    if photo:
+        url = TELEGRAM_API.format(token=token, method="sendPhoto")
+        payload = {"chat_id": chat_id, "photo": photo,
+                   "caption": caption, "parse_mode": "HTML"}
         r = requests.post(url, data=payload, timeout=30)
-    return r
+        if r.status_code == 429:
+            retry = 5
+            try:
+                retry = r.json().get("parameters", {}).get("retry_after", 5)
+            except Exception:
+                pass
+            log(f"Telegram rate limit, sleeping {retry}s")
+            time.sleep(retry + 1)
+            r = requests.post(url, data=payload, timeout=30)
+        if r.ok:
+            return r
+    # Fallback: plain text message with link preview.
+    msg_url = TELEGRAM_API.format(token=token, method="sendMessage")
+    return requests.post(msg_url, data={
+        "chat_id": chat_id, "text": caption, "parse_mode": "HTML",
+        "disable_web_page_preview": False}, timeout=30)
 
 
 def run_once():
@@ -212,9 +217,9 @@ def run_once():
         fresh = fresh[-MAX_NOTIFY_PER_FILTER:]
 
         for ct, o in fresh:
-            text = format_message(name, o)
+            caption = format_message(name, o)
             try:
-                resp = send_telegram(token, chat_id, text)
+                resp = send_photo(token, chat_id, best_photo(o), caption)
             except Exception as e:
                 log(f"[{tag}] Telegram send exception: {type(e).__name__}")
                 continue
@@ -261,7 +266,7 @@ def run_test():
         text = "✅ Test OLX-bot OK (no offers fetched)"
     log("TEST: sending one message to Telegram ...")
     try:
-        resp = send_telegram(token, chat_id, text)
+        resp = send_photo(token, chat_id, best_photo(sample) if sample else None, text)
         if resp.ok:
             log("TEST: Telegram OK — message delivered. Token & chat_id work.")
         else:
