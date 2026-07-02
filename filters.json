@@ -38,10 +38,5 @@
     "name": "camera foto",
     "query": "camera foto",
     "source": "https://www.olx.ro/oferte/q-camera%20foto/?search%5Border%5D=created_at%3Adesc"
-  },
-  {
-    "name": "camera video",
-    "query": "camera video",
-    "source": "https://www.olx.ro/electronice-si-electrocasnice/gadgets-wearables-si-camere-foto-video/camere-video/camere-video/q-camera-video/?search%5Border%5D=created_at%3Adesc"
   }
 ]
